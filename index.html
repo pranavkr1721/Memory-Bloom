@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+  <meta name="theme-color" content="#2D6A4F">
+  <meta name="description" content="MemoryBloom - Gentle pattern recognition and short-term memory care app designed for seniors and older adults.">
+  <title>MemoryBloom - Gentle Memory Care</title>
+  
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/svg+xml" href="icons/icon.svg">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="font-size-large theme-soft">
+
+  <!-- Top Navigation / Senior-Friendly Header -->
+  <header class="app-header">
+    <div class="header-left">
+      <button id="btn-home" class="btn-icon" aria-label="Return to Home screen" title="Home">
+        <span class="icon-sym">🏡</span>
+        <span class="btn-label">Home</span>
+      </button>
+      <button id="btn-levels" class="btn-icon" aria-label="Choose level" title="Levels">
+        <span class="icon-sym">⭐</span>
+        <span class="btn-label">Levels</span>
+      </button>
+    </div>
+
+    <div class="header-center">
+      <h1 class="app-title">MemoryBloom</h1>
+      <span class="app-tagline">Gentle Mind & Pattern Care</span>
+    </div>
+
+    <div class="header-right">
+      <button id="btn-voice-toggle" class="btn-icon" aria-label="Toggle spoken voice guidance" title="Voice Guidance">
+        <span id="voice-icon" class="icon-sym">🔊</span>
+        <span class="btn-label">Voice</span>
+      </button>
+      <button id="btn-settings" class="btn-icon" aria-label="Open accessibility settings" title="Settings">
+        <span class="icon-sym">⚙️</span>
+        <span class="btn-label">Settings</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main id="main-content" class="main-container">
+    
+    <!-- SCREEN 1: WELCOME & EXERCISE SELECTION -->
+    <section id="screen-welcome" class="screen active">
+      <div class="welcome-hero">
+        <div class="welcome-flower-icon">🌸</div>
+        <h2 class="hero-title">Welcome to Your Mind Garden</h2>
+        <p class="hero-desc">
+          Take your time and enjoy gentle, relaxing pattern exercises.
+          There is no rush, no pressure, and no penalties.
+        </p>
+      </div>
+
+      <div class="quick-stats-card">
+        <div class="stat-item">
+          <span class="stat-val" id="stat-streak">1</span>
+          <span class="stat-lbl">Days Practiced</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-val" id="stat-stars">0</span>
+          <span class="stat-lbl">Stars Earned</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-val" id="stat-completed">0</span>
+          <span class="stat-lbl">Gentle Rounds</span>
+        </div>
+      </div>
+
+      <h3 class="section-heading">Choose an Exercise:</h3>
+
+      <div class="exercise-grid">
+        <!-- Exercise Card 1: Glowing Tiles (Spatial Grid) -->
+        <div class="exercise-card" id="card-mode-grid" tabindex="0" role="button">
+          <div class="card-icon-bubble bg-lantern">🏮</div>
+          <div class="card-content">
+            <h4 class="card-title">1. Glowing Tiles</h4>
+            <p class="card-desc">Watch tiles light up, pause, then tap where they were.</p>
+            <div class="card-meta">
+              <span class="badge" id="badge-grid-level">Level 1</span>
+              <span class="meta-stars" id="stars-grid-mode">⭐⭐⭐</span>
+            </div>
+          </div>
+          <button class="btn-card-start" aria-label="Start Glowing Tiles exercise">Play ➔</button>
+        </div>
+
+        <!-- Exercise Card 2: Familiar Friends (Sequence Memory) -->
+        <div class="exercise-card" id="card-mode-sequence" tabindex="0" role="button">
+          <div class="card-icon-bubble bg-friends">🍎</div>
+          <div class="card-content">
+            <h4 class="card-title">2. Familiar Friends</h4>
+            <p class="card-desc">Remember a pleasant sequence of everyday symbols.</p>
+            <div class="card-meta">
+              <span class="badge" id="badge-seq-level">Level 1</span>
+              <span class="meta-stars" id="stars-seq-mode">⭐⭐⭐</span>
+            </div>
+          </div>
+          <button class="btn-card-start" aria-label="Start Familiar Friends exercise">Play ➔</button>
+        </div>
+
+        <!-- Exercise Card 3: Pattern Match (Visual Choice) -->
+        <div class="exercise-card" id="card-mode-choice" tabindex="0" role="button">
+          <div class="card-icon-bubble bg-shapes">🔷</div>
+          <div class="card-content">
+            <h4 class="card-title">3. Pattern Match</h4>
+            <p class="card-desc">Look at a pattern, then pick the exact match from choices.</p>
+            <div class="card-meta">
+              <span class="badge" id="badge-choice-level">Level 1</span>
+              <span class="meta-stars" id="stars-choice-mode">⭐⭐⭐</span>
+            </div>
+          </div>
+          <button class="btn-card-start" aria-label="Start Pattern Match exercise">Play ➔</button>
+        </div>
+      </div>
+
+      <!-- Cross-Platform Install / Android Device Banner -->
+      <div class="device-connect-card">
+        <div class="device-connect-info">
+          <span class="connect-icon">📱</span>
+          <div>
+            <strong>Use on Android & Windows</strong>
+            <p>Install this app on your phone or computer for easy daily touch practice.</p>
+          </div>
+        </div>
+        <button id="btn-show-connect" class="btn-secondary">Install / Phone Link</button>
+      </div>
+    </section>
+
+    <!-- SCREEN 2: ACTIVE GAME PLAY -->
+    <section id="screen-game" class="screen">
+      <!-- Top Exercise Status Bar -->
+      <div class="game-status-bar">
+        <div class="status-mode-info">
+          <span id="game-mode-icon" class="mode-icon">🏮</span>
+          <div>
+            <h2 id="game-mode-name" class="game-mode-title">Glowing Tiles</h2>
+            <span id="game-level-indicator" class="level-indicator">Level 1 of 10</span>
+          </div>
+        </div>
+        
+        <div class="status-controls">
+          <button id="btn-hint" class="btn-hint" aria-label="Show gentle hint" title="Show gentle hint">
+            💡 Gentle Hint
+          </button>
+          <button id="btn-sound-fx" class="btn-icon btn-small" aria-label="Toggle chime sounds" title="Toggle Chimes">
+            <span id="sound-icon" class="icon-sym">🔔</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Gentle Guidance Prompt Card -->
+      <div id="guidance-banner" class="guidance-banner phase-study" role="status" aria-live="polite">
+        <div class="guidance-icon-wrap">
+          <span id="guidance-emoji" class="guidance-emoji">👀</span>
+        </div>
+        <div class="guidance-text-wrap">
+          <div id="guidance-title" class="guidance-title">Look at the Pattern</div>
+          <div id="guidance-subtitle" class="guidance-subtitle">Memorize where the glowing lanterns are.</div>
+        </div>
+      </div>
+
+      <!-- Timer & Readiness Bar -->
+      <div class="study-progress-container" id="study-progress-container">
+        <div class="study-progress-bar" id="study-progress-bar"></div>
+      </div>
+
+      <!-- Action Button during study phase: Allows the senior to hide immediately when ready -->
+      <div class="study-action-bar" id="study-action-bar">
+        <button id="btn-ready-now" class="btn-ready" aria-label="I have memorized the pattern, hide it now">
+          ✨ I've Got It! Tap to Hide
+        </button>
+      </div>
+
+      <!-- Retention / Breathing Pause Element -->
+      <div id="pause-screen" class="pause-overlay hidden">
+        <div class="breathing-circle">
+          <span class="breathing-text">Hold it in your mind...</span>
+          <span class="breathing-leaf">🍃</span>
+        </div>
+        <p class="pause-subtext">Take a calm breath. The question is coming up!</p>
+      </div>
+
+      <!-- PLAYGROUND CONTAINERS (Dynamic according to mode) -->
+      <div class="playground-wrapper">
+        
+        <!-- Mode 1: Grid Memory Playground -->
+        <div id="grid-playground" class="game-container hidden">
+          <div id="memory-grid" class="memory-grid grid-2x2" role="region" aria-label="Memory Tile Grid">
+            <!-- Dynamically populated tiles -->
+          </div>
+        </div>
+
+        <!-- Mode 2: Sequence Friends Playground -->
+        <div id="sequence-playground" class="game-container hidden">
+          <!-- Sequence display area (during study) -->
+          <div id="seq-study-track" class="seq-card-track" role="region" aria-label="Sequence to remember">
+            <!-- Dynamically populated sequence cards -->
+          </div>
+          <!-- Sequence recall area (during recall) -->
+          <div id="seq-recall-panel" class="seq-recall-panel hidden">
+            <div class="seq-target-slots" id="seq-target-slots" aria-label="Your sequence slots">
+              <!-- Empty slots to fill -->
+            </div>
+            <div class="seq-picker-label">Tap items in the correct order:</div>
+            <div class="seq-choices-tray" id="seq-choices-tray">
+              <!-- Choices to tap -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Mode 3: Pattern Choice Playground -->
+        <div id="choice-playground" class="game-container hidden">
+          <!-- Study target pattern -->
+          <div id="choice-study-pattern" class="choice-study-pattern">
+            <!-- Pattern display -->
+          </div>
+          <!-- Multiple Choices (during recall) -->
+          <div id="choice-options-panel" class="choice-options-panel hidden">
+            <div class="choice-instruction">Which pattern did you see?</div>
+            <div id="choice-cards-container" class="choice-cards-container">
+              <!-- 2 or 3 large selectable cards -->
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Feedback / Result Banner -->
+      <div id="result-feedback" class="result-feedback hidden" role="alert">
+        <div class="feedback-card" id="feedback-card">
+          <div class="feedback-emoji" id="feedback-emoji">🌟</div>
+          <h3 class="feedback-title" id="feedback-title">Wonderful Job!</h3>
+          <p class="feedback-message" id="feedback-message">You remembered the pattern with great care.</p>
+          <div class="feedback-actions">
+            <button id="btn-next-round" class="btn-primary btn-large">Next Round ➔</button>
+            <button id="btn-retry-round" class="btn-secondary btn-large">Try Again Gently</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCREEN 3: LEVEL SELECTION DIALOG -->
+    <dialog id="modal-levels" class="app-dialog">
+      <div class="dialog-header">
+        <h3>Choose Level</h3>
+        <button id="btn-close-levels" class="btn-close" aria-label="Close level selection">✕</button>
+      </div>
+      <div class="dialog-body">
+        <p class="dialog-instruction">
+          You can practice any level at your own pace. Choose the one that feels most comfortable.
+        </p>
+        <div class="level-tabs">
+          <button class="level-tab active" data-tab="grid">🏮 Glowing Tiles</button>
+          <button class="level-tab" data-tab="sequence">🍎 Familiar Friends</button>
+          <button class="level-tab" data-tab="choice">🔷 Pattern Match</button>
+        </div>
+        <div class="level-list" id="level-list-container">
+          <!-- Populated by JS: 10 levels with star badges -->
+        </div>
+      </div>
+    </dialog>
+
+    <!-- SCREEN 4: ACCESSIBILITY & CAREGIVER SETTINGS DIALOG -->
+    <dialog id="modal-settings" class="app-dialog">
+      <div class="dialog-header">
+        <h3>Accessibility & Caregiver Settings</h3>
+        <button id="btn-close-settings" class="btn-close" aria-label="Close settings">✕</button>
+      </div>
+      <div class="dialog-body">
+        
+        <!-- Text Size -->
+        <div class="setting-group">
+          <label class="setting-label">Text & Button Size:</label>
+          <div class="setting-options" role="radiogroup">
+            <button class="btn-option font-opt" data-font="medium">Standard</button>
+            <button class="btn-option font-opt active" data-font="large">Large (Recommended)</button>
+            <button class="btn-option font-opt" data-font="xlarge">Extra Large</button>
+          </div>
+        </div>
+
+        <!-- Color Theme -->
+        <div class="setting-group">
+          <label class="setting-label">Visual Theme:</label>
+          <div class="setting-options" role="radiogroup">
+            <button class="btn-option theme-opt active" data-theme="soft">🌿 Gentle Sage</button>
+            <button class="btn-option theme-opt" data-theme="amber">☀️ Warm Amber</button>
+            <button class="btn-option theme-opt" data-theme="contrast">👓 High Contrast</button>
+          </div>
+        </div>
+
+        <!-- Display Time -->
+        <div class="setting-group">
+          <label class="setting-label">Pattern Display Time (Memorize Phase):</label>
+          <p class="setting-subtext">How long the pattern stays visible before hiding.</p>
+          <div class="setting-options" role="radiogroup">
+            <button class="btn-option time-opt" data-time="manual">Manual ("I'm Ready" only)</button>
+            <button class="btn-option time-opt" data-time="8">Relaxed (8 sec)</button>
+            <button class="btn-option time-opt active" data-time="5">Standard (5 sec)</button>
+            <button class="btn-option time-opt" data-time="3">Quick (3 sec)</button>
+          </div>
+        </div>
+
+        <!-- Pause / Retention Delay -->
+        <div class="setting-group">
+          <label class="setting-label">Retention Pause (Wait Time):</label>
+          <p class="setting-subtext">The quiet breathing pause after hiding before recalling.</p>
+          <div class="setting-options" role="radiogroup">
+            <button class="btn-option pause-opt" data-pause="1">Brief (1 sec)</button>
+            <button class="btn-option pause-opt active" data-pause="3">Gentle (3 sec)</button>
+            <button class="btn-option pause-opt" data-pause="5">Extended (5 sec)</button>
+          </div>
+        </div>
+
+        <!-- Voice & Sounds -->
+        <div class="setting-group">
+          <label class="setting-label">Audio Guidance:</label>
+          <div class="toggle-row">
+            <label class="switch-wrap">
+              <input type="checkbox" id="toggle-voice" checked>
+              <span class="switch-slider"></span>
+            </label>
+            <span class="toggle-text">Spoken voice guidance (reads instructions aloud)</span>
+          </div>
+          <div class="toggle-row">
+            <label class="switch-wrap">
+              <input type="checkbox" id="toggle-sound" checked>
+              <span class="switch-slider"></span>
+            </label>
+            <span class="toggle-text">Melodic chimes & cheerful feedback sounds</span>
+          </div>
+        </div>
+
+        <!-- Caregiver Reset / Clear -->
+        <div class="setting-group border-top">
+          <label class="setting-label">Caregiver Data Management:</label>
+          <p class="setting-subtext">You can reset progress if starting fresh with a new user.</p>
+          <button id="btn-reset-data" class="btn-danger-outline">Reset Training Records</button>
+        </div>
+
+      </div>
+    </dialog>
+
+    <!-- SCREEN 5: ANDROID & WINDOWS INSTALLATION MODAL -->
+    <dialog id="modal-connect" class="app-dialog">
+      <div class="dialog-header">
+        <h3>Use on Android & Windows</h3>
+        <button id="btn-close-connect" class="btn-close" aria-label="Close dialog">✕</button>
+      </div>
+      <div class="dialog-body">
+        
+        <div class="platform-guides">
+          <!-- Android Section -->
+          <div class="platform-box">
+            <div class="platform-badge">🤖 Android Phone / Tablet</div>
+            <h4>Install as an App on Android:</h4>
+            <ol class="guide-steps">
+              <li>Make sure your phone is connected to the same Wi-Fi network.</li>
+              <li>Open Google Chrome on your Android phone.</li>
+              <li>Type this address into Chrome:
+                <div class="ip-address-pill" id="android-url-display">http://10.184.103.76:3000</div>
+              </li>
+              <li>Tap Chrome's <strong>Menu (⋮)</strong> and tap <strong>"Install app"</strong> or <strong>"Add to Home screen"</strong>.</li>
+              <li>MemoryBloom will now appear on your home screen as a full-screen native app!</li>
+            </ol>
+            <div class="qr-code-section" id="qr-code-section">
+              <div class="qr-label">Or Scan QR Code with Phone Camera:</div>
+              <div id="qr-container" class="qr-container">
+                <!-- Rendered QR Canvas -->
+                <canvas id="qr-canvas" width="180" height="180"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- Windows Section -->
+          <div class="platform-box">
+            <div class="platform-badge">💻 Windows PC / Laptop</div>
+            <h4>Use as a Desktop App on Windows:</h4>
+            <ol class="guide-steps">
+              <li>In Microsoft Edge or Chrome, click the <strong>Install App icon (⊕)</strong> in the top address bar.</li>
+              <li>Or double-click the included <strong>Launch-Windows.bat</strong> shortcut in the project folder to open in standalone desktop window mode.</li>
+              <li>It will launch in its own window without browser tabs or distractions!</li>
+            </ol>
+            <button id="btn-install-pwa" class="btn-primary btn-full-width hidden">
+              Install MemoryBloom on this Computer
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </dialog>
+
+  </main>
+
+  <!-- Bottom Encouragement Toast -->
+  <div id="toast-message" class="toast-message" role="status" aria-live="polite"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
